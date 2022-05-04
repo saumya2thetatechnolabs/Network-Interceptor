@@ -12,8 +12,6 @@ import com.thetatechnolabs.networkinterceptor.R
 import com.thetatechnolabs.networkinterceptor.databinding.FragmentNetworkCallListBinding
 import com.thetatechnolabs.networkinterceptor.ui.details.DetailsActivity
 import com.thetatechnolabs.networkinterceptor.ui.home.adapters.NetworkCallListAdapter
-import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.hide
-import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.show
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.launch
 import timber.log.Timber

@@ -1,4 +1,4 @@
-package com.thetatechnolabs.networkinterceptor.models
+package com.thetatechnolabs.networkinterceptorexample.models
 
 data class Weather(
     val dataseries: List<Datasery>,

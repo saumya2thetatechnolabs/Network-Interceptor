@@ -9,7 +9,6 @@ import com.thetatechnolabs.networkinterceptor.R
 import com.thetatechnolabs.networkinterceptor.data.database.entities.NetworkInfo
 import com.thetatechnolabs.networkinterceptor.databinding.FragmentInfoBinding
 import com.thetatechnolabs.networkinterceptor.ui.home.NetworkCallListFragment
-import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.bind
 
 internal class InfoFragment : Fragment() {
 

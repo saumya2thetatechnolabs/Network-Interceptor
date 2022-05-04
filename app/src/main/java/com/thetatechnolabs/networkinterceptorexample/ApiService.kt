@@ -1,8 +1,8 @@
-package com.thetatechnolabs.networkinterceptor
+package com.thetatechnolabs.networkinterceptorexample
 
 import android.content.Context
 import com.google.gson.GsonBuilder
-import com.thetatechnolabs.networkinterceptor.models.Weather
+import com.thetatechnolabs.networkinterceptorexample.models.Weather
 import com.thetatechnolabs.networkinterceptor.network.NetworkInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0")
+    @GET("astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&shift=0")
     suspend fun getWeather(): Response<Weather>
 }
 

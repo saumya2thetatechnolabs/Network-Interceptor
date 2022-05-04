@@ -9,8 +9,6 @@ import com.thetatechnolabs.networkinterceptor.R
 import com.thetatechnolabs.networkinterceptor.data.database.entities.NetworkInfo
 import com.thetatechnolabs.networkinterceptor.databinding.FragmentResponseBinding
 import com.thetatechnolabs.networkinterceptor.ui.home.NetworkCallListFragment
-import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.hide
-import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.show
 
 internal class ResponseFragment : Fragment() {
 

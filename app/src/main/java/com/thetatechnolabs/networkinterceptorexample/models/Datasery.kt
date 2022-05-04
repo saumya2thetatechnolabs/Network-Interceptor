@@ -1,4 +1,5 @@
-package com.thetatechnolabs.networkinterceptor.models
+package com.thetatechnolabs.networkinterceptorexample.models
+
 
 data class Datasery(
     val cloudcover: Int,

@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.thetatechnolabs.networkinterceptor.databinding.RowParamsBinding
-import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.bind
 import okhttp3.Headers
 
 internal class RequestAdapter(private val headers: Headers) :

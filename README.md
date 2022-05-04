@@ -5,8 +5,12 @@ Coding :)
 
 ## Installation
 
+### Import library manually
+
 Install this library module by importing it via File -> New -> Import Module -> Choose the path to
 this library
+
+### Use library via adding dependency
 
 Add it in your settings.gradle:
 

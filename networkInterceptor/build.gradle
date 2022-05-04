@@ -3,11 +3,11 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    id 'maven-publish'
 }
 
 android {
     compileSdk 32
-
     defaultConfig {
         minSdk 24
         targetSdk 32
@@ -15,10 +15,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
-
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -31,6 +30,20 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.github.saumya2thetatechnolabs'
+                artifactId = 'network-interceptor'
+                version = '1.0.0'
+            }
+        }
     }
 }
 

@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         binding.rootLayout.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
-                    this@MainActivity.networkService().getNews()
+                    this@MainActivity.networkService().getWeather()
                 } catch (exception: Exception) {
                     Timber.e(exception.message)
                 }

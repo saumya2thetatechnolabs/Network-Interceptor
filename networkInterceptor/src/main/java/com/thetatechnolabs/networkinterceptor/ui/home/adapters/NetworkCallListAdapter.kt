@@ -1,5 +1,6 @@
 package com.thetatechnolabs.networkinterceptor.ui.home.adapters
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.thetatechnolabs.networkinterceptor.R
 import com.thetatechnolabs.networkinterceptor.data.database.entities.NetworkInfo
 import com.thetatechnolabs.networkinterceptor.databinding.RowNetworkCallBinding
+import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.getTime
 import com.thetatechnolabs.networkinterceptor.utils.NetworkItemClickCallback
 
 internal class NetworkCallListAdapter(private val onNetworkItemClicked: NetworkItemClickCallback) :

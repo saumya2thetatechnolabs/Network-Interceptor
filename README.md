@@ -2,7 +2,6 @@
 
 <p align="center">
   <img src="https://i.ibb.co/C51Bn48/Screenshot-20220504-164723-Network-Interceptor.jpg" width="350" title="Screenshot 1">
-<br/>
   <img src="https://i.ibb.co/FqGnsVz/Screenshot-20220504-164731-Network-Interceptor.jpg" width="350" alt="accessibility text">
 </p>
 

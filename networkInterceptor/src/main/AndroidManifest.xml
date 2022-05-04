@@ -18,7 +18,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.thetatechnolabs.networkinterceptor.provider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true"
             tools:ignore="ExportedContentProvider">

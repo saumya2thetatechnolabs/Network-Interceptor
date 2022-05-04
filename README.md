@@ -8,6 +8,12 @@ Coding :)
 Install this library module by importing it via File -> New -> Import Module -> Choose the path to
 this library
 
+Add it in your settings.gradle:
+    maven { url 'https://jitpack.io' }
+Add the dependency to your app-level build.gradle:
+    implementation 'com.github.saumya2thetatechnolabs:Network-Interceptor:{latest-version}'
+
+
 ## Usage
 
 Usage in MainActivity.

@@ -1,0 +1,31 @@
+<resources>
+    <string name="search">Search</string>
+    <string name="title_activity_details">DetailsActivity</string>
+
+    <string name="duration_text">%sms</string>
+    <string name="headers">-- Headers --</string>
+    <string name="body">-- Body --</string>
+    <string name="placeholder">----</string>
+    <string name="curl_url">Export request as Curl Url</string>
+    <string name="log">Share Log</string>
+
+    <!-- Info Tab Tags   -->
+    <string name="url_header">[URL]</string>
+    <string name="method_header">[Method]</string>
+    <string name="status_header">[Status]</string>
+    <string name="response_time_header">[Response Time]</string>
+    <string name="request_time_header">[Request Time]</string>
+    <string name="content_type_header">[Content-Type]</string>
+    <string name="time_out_header">[Timeout]</string>
+
+    <!-- Request Tab Tags   -->
+    <string name="content_length_header">[Content-Length]</string>
+    <string name="empty_request_body_text">Request body is empty</string>
+
+    <!-- Response Tab Tags   -->
+    <string name="empty_response_body_text">Response body is empty</string>
+    <string name="share">Share</string>
+
+    <!--  File related resource  -->
+    <string name="file_name">Simple Log</string>
+</resources>

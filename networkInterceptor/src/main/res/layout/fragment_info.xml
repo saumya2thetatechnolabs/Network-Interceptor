@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.details.info.InfoFragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/parentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/textUrlInfo"
+            layout="@layout/row_params" />
+
+        <include
+            android:id="@+id/textMethodInfo"
+            layout="@layout/row_params" />
+
+        <include
+            android:id="@+id/textStatusInfo"
+            layout="@layout/row_params" />
+
+        <include
+            android:id="@+id/textRequestTimeInfo"
+            layout="@layout/row_params" />
+
+        <include
+            android:id="@+id/textResponseTimeInfo"
+            layout="@layout/row_params" />
+
+        <include
+            android:id="@+id/textTimeOut"
+            layout="@layout/row_params" />
+
+        <include
+            android:id="@+id/textContentType"
+            layout="@layout/row_params" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>

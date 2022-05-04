@@ -9,10 +9,20 @@ Install this library module by importing it via File -> New -> Import Module -> 
 this library
 
 Add it in your settings.gradle:
-    maven { url 'https://jitpack.io' }
-Add the dependency to your app-level build.gradle:
-    implementation 'com.github.saumya2thetatechnolabs:Network-Interceptor:{latest-version}'
 
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+```
+
+Add the dependency to your app-level build.gradle:
+
+```groovy
+dependencies {
+    implementation 'com.github.saumya2thetatechnolabs:Network-Interceptor:{latest-version}'
+}
+```
 
 ## Usage
 

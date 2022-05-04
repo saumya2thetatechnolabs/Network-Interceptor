@@ -8,6 +8,8 @@ Coding :)
 Install this library module by importing it via File -> New -> Import Module -> Choose the path to
 this library
 
+[![](https://jitpack.io/v/saumya2thetatechnolabs/Network-Interceptor.svg)](https://jitpack.io/#saumya2thetatechnolabs/Network-Interceptor)
+
 ## Usage
 
 Usage in MainActivity.

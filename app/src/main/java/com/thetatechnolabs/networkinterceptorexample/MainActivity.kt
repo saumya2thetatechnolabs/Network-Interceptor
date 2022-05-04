@@ -3,9 +3,9 @@ package com.thetatechnolabs.networkinterceptorexample
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.thetatechnolabs.networkinterceptor.databinding.ActivityMainBinding
 import com.thetatechnolabs.networkinterceptor.gesture.GestureUtils.registerSensorListener
 import com.thetatechnolabs.networkinterceptor.gesture.GestureUtils.unRegisterSensorListener
+import com.thetatechnolabs.networkinterceptorexample.databinding.ActivityMainBinding
 import com.thetatechnolabs.networkinterceptorexample.utils.NetworkUtils.networkService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

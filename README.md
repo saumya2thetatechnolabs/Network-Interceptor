@@ -1,12 +1,12 @@
 # Network Interceptor [![Release](https://jitpack.io/v/saumya2thetatechnolabs/Network-Interceptor.svg)](https://jitpack.io/#saumya2thetatechnolabs/Network-Interceptor)
 
+Network Interceptor is a library to track your network calls to help you debug your code better.
+Happy Coding :)
+
 <p align="center">
   <img src="https://i.ibb.co/C51Bn48/Screenshot-20220504-164723-Network-Interceptor.jpg" width="350" title="Screenshot 1">
   <img src="https://i.ibb.co/FqGnsVz/Screenshot-20220504-164731-Network-Interceptor.jpg" width="350" alt="accessibility text">
 </p>
-
-Network Interceptor is a library to track your network calls to help you debug your code better.
-Happy Coding :)
 
 ## Installation
 
@@ -20,8 +20,10 @@ this library
 Add it in your settings.gradle:
 
 ```groovy
-repositories {
-    maven { url 'https://jitpack.io' }
+dependencyResolutionManagement {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 }
 ```
 

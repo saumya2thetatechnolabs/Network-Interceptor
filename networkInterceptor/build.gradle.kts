@@ -73,7 +73,7 @@ afterEvaluate {
 
                 groupId = "com.github.saumya2thetatechnolabs"
                 artifactId = "network-interceptor"
-                version = "1.1.2"
+                version = "1.2.1"
             }
         }
     }

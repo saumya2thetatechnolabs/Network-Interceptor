@@ -1,12 +1,14 @@
 package com.thetatechnolabs.networkinterceptor.data.database.entities
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Keep
 @Entity(tableName = "network_call")
 internal data class NetworkInfo(
     @PrimaryKey(autoGenerate = true)

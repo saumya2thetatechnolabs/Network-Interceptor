@@ -1,9 +1,11 @@
 package com.thetatechnolabs.networkinterceptor.data.database.typeconverters
 
+import androidx.annotation.Keep
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.thetatechnolabs.networkinterceptor.data.database.entities.Response
 
+@Keep
 internal class ResponseTypeConverter {
 
     /**

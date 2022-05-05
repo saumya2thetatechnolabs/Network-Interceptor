@@ -1,0 +1,4 @@
+-dontwarn okio.**
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.ParametersAreNonnullByDefault
+-dontwarn org.jetbrains.annotations.**

@@ -17,7 +17,8 @@ android {
     }
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
         }
     }
     buildFeatures {
@@ -73,7 +74,7 @@ afterEvaluate {
 
                 groupId = "com.github.saumya2thetatechnolabs"
                 artifactId = "network-interceptor"
-                version = "1.0.10"
+                version = "1.1.1"
             }
         }
     }

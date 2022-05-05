@@ -5,9 +5,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
-import com.thetatechnolabs.networkinterceptor.data.database.entities.Info
-import com.thetatechnolabs.networkinterceptor.data.database.entities.NetworkInfo
-import com.thetatechnolabs.networkinterceptor.data.database.entities.Request
 import com.thetatechnolabs.networkinterceptor.data.repositories.NetworkRepo
 import kotlinx.coroutines.*
 import okhttp3.Interceptor
@@ -77,33 +74,32 @@ class NetworkInterceptor constructor(private val context: Context?) : Intercepto
             scope.launch {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     if (context != null) {
-                        NetworkRepo.getInstance(context).addNetworkCall(
-                            NetworkInfo(
-                                info = Info(
-                                    url = request.url().toString(),
-                                    method = request.method(),
-                                    status = null,
-                                    requestTimeStamp = requestTimeStamp,
-                                    responseTimeStamp = null,
-                                    contentType = requestContentType,
-                                    timeOut = chain.connectTimeoutMillis(),
-                                    tookMs = null
-                                ),
-                                request = Request(
-                                    contentLength = requestContentLength,
-                                    body = "${requestBody ?: "${exception.message}"}",
-                                    sentRequestAtMillis = startNs,
-                                    curlUrl = curlUrl
-                                ).putHeader(requestHeaders),
-                                response = com.thetatechnolabs.networkinterceptor.data.database.entities.Response(
-                                    body = exception.message,
-                                    receivedResponseAtMillis = startNs,
-                                    contentLength = "Content-Length for response is unknown"
-                                ).putHeader(null),
-                                timeStamp = ZonedDateTime.now()
-                                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSS Z"))
+                        with(NetworkRepo.getInstance(context)) {
+                            addInfo(
+                                request.url().toString(),
+                                request.method(),
+                                null,
+                                requestTimeStamp,
+                                null,
+                                null,
+                                requestContentType,
+                                chain.connectTimeoutMillis()
                             )
-                        )
+                            addRequest(
+                                requestHeaders,
+                                requestContentLength,
+                                "${requestBody ?: "Request body is empty"}",
+                                startNs,
+                                curlUrl
+                            )
+                            addResponse(
+                                null,
+                                exception.message,
+                                startNs,
+                                contentLength = "Content-Length for response is unknown"
+                            )
+                            addNetworkCall()
+                        }
                     }
                 }
                 this.cancel()
@@ -133,39 +129,38 @@ class NetworkInterceptor constructor(private val context: Context?) : Intercepto
         scope.launch {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 if (context != null) {
-                    NetworkRepo.getInstance(context).addNetworkCall(
-                        NetworkInfo(
-                            info = Info(
-                                url = request.url().toString(),
-                                method = request.method(),
-                                status = response.code(),
-                                requestTimeStamp = requestTimeStamp,
-                                responseTimeStamp = responseTimeStamp,
-                                contentType = "${
-                                    response.body()?.contentType()?.type()
-                                }/${
-                                    response.body()?.contentType()?.subtype()
-                                }",
-                                timeOut = chain.connectTimeoutMillis(),
-                                tookMs = tookMs
-                            ),
-                            request = Request(
-                                contentLength = requestContentLength,
-                                body = "${requestBody ?: "Request Body is Empty"}",
-                                sentRequestAtMillis = response.sentRequestAtMillis() - startNs,
-                                curlUrl = curlUrl
-                            ).putHeader(requestHeaders),
-                            response = com.thetatechnolabs.networkinterceptor.data.database.entities.Response(
-                                body = GsonBuilder().setPrettyPrinting().create()
-                                    .toJson(JsonParser.parseString(responseTemp)),
-                                receivedResponseAtMillis = tookMs,
-                                isSuccessful = response.isSuccessful,
-                                contentLength = bodySize
-                            ).putHeader(responseHeaders),
-                            timeStamp = ZonedDateTime.now()
-                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSS Z"))
+                    NetworkRepo.getInstance(context).apply {
+                        addInfo(
+                            url = request.url().toString(),
+                            method = request.method(),
+                            status = response.code(),
+                            requestTimeStamp = requestTimeStamp,
+                            responseTimeStamp = responseTimeStamp,
+                            contentType = "${
+                                response.body()?.contentType()?.type()
+                            }/${
+                                response.body()?.contentType()?.subtype()
+                            }",
+                            timeOut = chain.connectTimeoutMillis(),
+                            tookMs = tookMs
                         )
-                    )
+                        addRequest(
+                            requestHeaders,
+                            contentLength = requestContentLength,
+                            body = "${requestBody ?: "Request Body is Empty"}",
+                            sentRequestAtMillis = response.sentRequestAtMillis() - startNs,
+                            curlUrl = curlUrl
+                        )
+                        addResponse(
+                            responseHeaders,
+                            body = GsonBuilder().setPrettyPrinting().create()
+                                .toJson(JsonParser.parseString(responseTemp)),
+                            receivedResponseAtMillis = tookMs,
+                            isSuccessful = response.isSuccessful,
+                            contentLength = bodySize
+                        )
+                        addNetworkCall()
+                    }
                 }
             }
             this.cancel()

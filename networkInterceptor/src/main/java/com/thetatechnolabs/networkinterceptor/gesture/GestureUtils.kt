@@ -1,7 +1,9 @@
 package com.thetatechnolabs.networkinterceptor.gesture
 
 import android.app.Activity
+import androidx.annotation.Keep
 
+@Keep
 object GestureUtils {
     /**
      * Call [registerSensorListener] on an ActivityContext to make the BottomSheet to show on motion detection

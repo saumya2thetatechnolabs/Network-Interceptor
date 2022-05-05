@@ -1,4 +1,7 @@
+# configuration file for building snapshots and releases with jitpack.io
 jdk:
   - openjdk11
 before_install:
   - ./scripts/prepareJitpackEnvironment.sh
+  - sdk install java 11.0.10-open
+  - sdk use java 11.0.10-open

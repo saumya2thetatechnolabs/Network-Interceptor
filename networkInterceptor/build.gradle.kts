@@ -18,7 +18,6 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            isShrinkResources = true
         }
     }
     buildFeatures {
@@ -69,12 +68,12 @@ dependencies {
 afterEvaluate {
     publishing {
         publications {
-            create<MavenPublication>("release") {
-                from(components.getByName("release"))
+            register<MavenPublication>("release") {
+                from(components["release"])
 
                 groupId = "com.github.saumya2thetatechnolabs"
                 artifactId = "network-interceptor"
-                version = "1.1.1"
+                version = "1.1.2"
             }
         }
     }

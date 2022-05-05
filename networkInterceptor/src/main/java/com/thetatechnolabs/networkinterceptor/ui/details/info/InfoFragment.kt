@@ -10,6 +10,7 @@ import com.thetatechnolabs.networkinterceptor.data.database.entities.NetworkInfo
 import com.thetatechnolabs.networkinterceptor.databinding.FragmentInfoBinding
 import com.thetatechnolabs.networkinterceptor.ui.home.NetworkCallListFragment
 import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.bind
+import java.util.concurrent.TimeUnit
 
 internal class InfoFragment : Fragment() {
 
@@ -47,7 +48,8 @@ internal class InfoFragment : Fragment() {
                     )
                     textTimeOut.bind(
                         getString(R.string.time_out_header),
-                        timeOut?.toString() ?: getString(R.string.placeholder)
+                        timeOut?.let { "${TimeUnit.MILLISECONDS.toSeconds(it.toLong())}s" }
+                            ?: run { getString(R.string.placeholder) }
                     )
                     textContentType.bind(
                         getString(R.string.content_type_header),

@@ -16,7 +16,6 @@ import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.hide
 import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.show
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 internal class NetworkCallListFragment : BottomSheetDialogFragment() {
 
@@ -42,7 +41,6 @@ internal class NetworkCallListFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         networkCallListAdapter = NetworkCallListAdapter { clickedItem ->
-            Timber.d("Clicked Item: ${clickedItem.id}")
             startActivity(Intent(requireContext(), DetailsActivity::class.java).also {
                 it.putExtra(
                     TAG, clickedItem
@@ -57,7 +55,6 @@ internal class NetworkCallListFragment : BottomSheetDialogFragment() {
         lifecycleScope.launch {
             viewModel.networkCallList.cancellable().collect { list ->
                 binding.progressBar.show()
-                Timber.e("collected list -> ${list.size}")
                 networkCallListAdapter.submitList(list)
                 binding.progressBar.hide()
             }

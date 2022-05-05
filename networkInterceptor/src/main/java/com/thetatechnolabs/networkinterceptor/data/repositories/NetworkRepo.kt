@@ -68,6 +68,21 @@ internal class NetworkRepo(context: Context) {
         ).putHeader(headers)
     }
 
+    fun addRequest(
+        volleyHeaders: MutableMap<String, String>?,
+        contentLength: String?,
+        body: String?,
+        sentRequestAtMillis: Long,
+        curlUrl: String
+    ) {
+        request = Request(
+            contentLength = contentLength,
+            body = body,
+            sentRequestAtMillis = sentRequestAtMillis,
+            curlUrl = curlUrl
+        ).putVolleyHeaders(volleyHeaders)
+    }
+
     fun addResponse(
         headers: Headers?,
         body: String?,
@@ -81,6 +96,21 @@ internal class NetworkRepo(context: Context) {
             isSuccessful = isSuccessful,
             contentLength = contentLength
         ).putHeader(headers)
+    }
+
+    fun addResponse(
+        volleyHeaders: MutableMap<String, String>?,
+        body: String?,
+        receivedResponseAtMillis: Long,
+        isSuccessful: Boolean = false,
+        contentLength: String?
+    ) {
+        response = Response(
+            body = body,
+            receivedResponseAtMillis = receivedResponseAtMillis,
+            isSuccessful = isSuccessful,
+            contentLength = contentLength
+        ).putVolleyHeaders(volleyHeaders)
     }
 
     fun getNetworkCallList(): Flow<List<NetworkInfo>> {

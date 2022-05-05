@@ -14,7 +14,7 @@
         android:theme="@style/Theme.NetworkInterceptor"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.thetatechnolabs.networkinterceptorexample.MainActivity"
+            android:name="com.thetatechnolabs.networkinterceptorexample.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -61,7 +61,7 @@ override fun onDestroy() {
 }
 ```
 
-Must add an OkHttpClient as below.
+Must add an OkHttpClient as below in Retrofit Builder.
 (Context is required to get the database instance when the network call is fired.)
 
 ```kotlin

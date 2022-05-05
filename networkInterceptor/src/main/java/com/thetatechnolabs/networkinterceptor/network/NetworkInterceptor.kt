@@ -93,7 +93,7 @@ class NetworkInterceptor constructor(private val context: Context?) : Intercepto
                                 curlUrl
                             )
                             addResponse(
-                                null,
+                                headers = null,
                                 exception.message,
                                 startNs,
                                 contentLength = "Content-Length for response is unknown"

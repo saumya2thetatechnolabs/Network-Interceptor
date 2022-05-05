@@ -33,4 +33,15 @@ internal data class Response(
     fun getHeader(headers: String?): Headers? {
         return Gson().fromJson(headers, Headers::class.java)
     }
+
+    fun putVolleyHeaders(headers: MutableMap<String, String>?): Response {
+        this.headers = Gson().toJson(headers)
+        return this
+    }
+
+    fun getVolleyHeaders(headers: String?): Map<String, String>? {
+        var map = HashMap<String, String>()
+        map = Gson().fromJson(headers, map.javaClass)
+        return map
+    }
 }

@@ -1,18 +1,20 @@
-package com.thetatechnolabs.networkinterceptorexample
+package com.thetatechnolabs.networkinterceptorexample.ui
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.thetatechnolabs.networkinterceptor.gesture.GestureUtils.registerSensorListener
 import com.thetatechnolabs.networkinterceptor.gesture.GestureUtils.unRegisterSensorListener
+import com.thetatechnolabs.networkinterceptor.network.Queue.Companion.queueSharedInstance
+import com.thetatechnolabs.networkinterceptor.utils.TestUtils.showNetworkLog
 import com.thetatechnolabs.networkinterceptorexample.databinding.ActivityMainBinding
-import com.thetatechnolabs.networkinterceptorexample.utils.NetworkUtils.networkService
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val mainViewModel: MainViewModel by viewModels { MainViewModelFactory(application) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,14 +24,15 @@ class MainActivity : AppCompatActivity() {
         Timber.plant(Timber.DebugTree())
         this.registerSensorListener()
 
-        binding.rootLayout.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    this@MainActivity.networkService().getWeather()
-                } catch (exception: Exception) {
-                    Timber.e(exception.message)
-                }
+        lifecycleScope.launch {
+            mainViewModel.getWeather.observe(this@MainActivity) {
+                binding.textResponse.text = it
             }
+        }
+
+        binding.rootLayout.setOnClickListener {
+            showNetworkLog()
+            mainViewModel.makeNetworkRequest()
         }
     }
 

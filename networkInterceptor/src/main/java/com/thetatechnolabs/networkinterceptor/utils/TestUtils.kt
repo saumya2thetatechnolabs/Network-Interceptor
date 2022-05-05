@@ -1,14 +1,18 @@
 package com.thetatechnolabs.networkinterceptor.utils
 
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import com.thetatechnolabs.networkinterceptor.ui.home.NetworkCallListFragment
 import timber.log.Timber
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 object TestUtils {
     //Just for testing purpose, register this in touch listeners
-    internal fun FragmentActivity.showNetworkLog() {
+    fun FragmentActivity.showNetworkLog() {
         val fragmentManager =
             this.supportFragmentManager
         Handler(Looper.getMainLooper()).postDelayed({
@@ -22,4 +26,9 @@ object TestUtils {
             }
         }, 100)
     }
+
+    val Any.currentTimeStamp: String
+        @RequiresApi(Build.VERSION_CODES.O)
+        get() = ZonedDateTime.now()
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSS Z"))
 }

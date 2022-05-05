@@ -52,4 +52,7 @@ dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
 
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
+
+    //Volley
+    implementation("com.android.volley:volley:1.2.1")
 }

@@ -6,15 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thetatechnolabs.networkinterceptor.network.GetRequest.Companion.makeAGetRequest
-import com.thetatechnolabs.networkinterceptor.network.PostRequest.Companion.makeAPostRequest
 import com.thetatechnolabs.networkinterceptor.network.Queue.Companion.volleyRequestQueue
 import com.thetatechnolabs.networkinterceptorexample.ApiClient.Companion.networkService
-import com.thetatechnolabs.networkinterceptorexample.models.Test
 import com.thetatechnolabs.networkinterceptorexample.models.Weather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import timber.log.Timber
 
 class MainViewModel(private val application: Application) : ViewModel() {
@@ -46,33 +43,6 @@ class MainViewModel(private val application: Application) : ViewModel() {
             }
         }
     }
-
-
-    fun makeVolleyPostRequest(name: String, gender: String, email: String, status: String) =
-        viewModelScope.launch(Dispatchers.IO) {
-            val postRequest = application.makeAPostRequest<Test> {
-                url = "https://gorest.co.in/public/v2/users"
-                headers = mutableMapOf(
-                    "Content-Type" to "application/json",
-                    "Authorization" to "Bearer cc6a5de2498aca191c3181598126c8fc49628e860b7b8143c9439f3d87fdb819"
-                )
-                requestBody = JSONObject().also {
-                    with(it) {
-                        put("name", name)
-                        put("gender", gender)
-                        put("email", email)
-                        put("status", status)
-                    }
-                }
-                modelClass = Test::class.java
-                onSuccess = { _getWeather.value = it.toString() }
-                onFailure = { localizedMessage, message, networkTimeMs ->
-                    _getWeather.value =
-                        "$message took ${networkTimeMs}ms with $localizedMessage"
-                }
-            }
-            application.volleyRequestQueue.add(postRequest)
-        }
 
     fun makeRetrofitRequest() = viewModelScope.launch(Dispatchers.IO) {
         try {

@@ -36,10 +36,11 @@ class ApiClient(context: Context) {
     companion object {
         private var INSTANCE: ApiClient? = null
 
-        fun sharedInstance(context: Context) = INSTANCE ?: synchronized(this) {
-            return INSTANCE ?: ApiClient(context).also {
-                INSTANCE = it
+        val Context.networkService: ApiClient
+            get() = INSTANCE ?: synchronized(this) {
+                return INSTANCE ?: ApiClient(this).also {
+                    INSTANCE = it
+                }
             }
-        }
     }
 }

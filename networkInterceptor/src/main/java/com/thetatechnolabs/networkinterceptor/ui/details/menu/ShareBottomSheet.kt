@@ -135,11 +135,11 @@ internal class ShareBottomSheet : BottomSheetDialogFragment() {
                     writeALine("** REQUEST **")
                     newLine()
                     clickedItem?.request?.apply {
-                        getHeader(headers)?.let {
+                        getHeaders(headers)?.let { headerMap ->
                             writeALine("-- Headers --")
-                            for (index in 0 until it.size()) {
-                                writeALine("[${it.name(index)}]")
-                                writeALine(it.value(index))
+                            for (header in headerMap.entries) {
+                                writeALine("[${header.key}]")
+                                writeALine(header.value)
                                 newLine()
                             }
                         }
@@ -163,11 +163,11 @@ internal class ShareBottomSheet : BottomSheetDialogFragment() {
                     writeALine("** RESPONSE **")
                     newLine()
                     clickedItem?.response?.apply {
-                        getHeader(headers)?.let {
+                        getHeaders(headers)?.let {
                             writeALine("-- Headers --")
-                            for (index in 0 until it.size()) {
-                                writeALine("[${it.name(index)}]")
-                                writeALine(it.value(index))
+                            for (header in it.entries) {
+                                writeALine("[${header.key}]")
+                                writeALine(header.value)
                                 newLine()
                             }
                         }

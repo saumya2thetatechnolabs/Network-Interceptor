@@ -9,7 +9,7 @@ class Queue constructor(context: Context) {
     companion object {
         @Volatile
         private var INSTANCE: Queue? = null
-        val Context.queueSharedInstance: Queue
+        val Context.volleyRequestQueue: Queue
             get() = INSTANCE ?: synchronized(this) {
                 return INSTANCE ?: Queue(this).also {
                     INSTANCE = it

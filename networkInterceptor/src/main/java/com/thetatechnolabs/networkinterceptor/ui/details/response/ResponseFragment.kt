@@ -1,5 +1,6 @@
 package com.thetatechnolabs.networkinterceptor.ui.details.response
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ internal class ResponseFragment : Fragment() {
 
     private var _binding: FragmentResponseBinding? = null
     private val binding: FragmentResponseBinding get() = _binding!!
+    private lateinit var responseAdapter: ResponseAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,16 +27,23 @@ internal class ResponseFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
             val clickedItem =
                 checkNotNull(arguments?.getParcelable<NetworkInfo>(NetworkCallListFragment.TAG))
+            responseAdapter =
+                ResponseAdapter(clickedItem.response.getHeaders(clickedItem.response.headers))
             with(binding) {
                 textHeaderResponse.show()
                 textBodyHeaderResponse.show()
-                RVHeadersListResponse.adapter =
-                    ResponseAdapter(clickedItem.response.getHeader(clickedItem.response.headers))
+                RVHeadersListResponse.apply {
+                    adapter = responseAdapter
+                    post {
+                        responseAdapter.notifyDataSetChanged()
+                    }
+                }
                 textBodyResponse.text =
                     clickedItem.response.body ?: getString(R.string.empty_response_body_text)
             }

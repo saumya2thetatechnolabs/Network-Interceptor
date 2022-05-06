@@ -16,30 +16,33 @@ import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.beautifyString
 import com.thetatechnolabs.networkinterceptor.utils.SuccessCallback
 import com.thetatechnolabs.networkinterceptor.utils.TestUtils.currentTimeStamp
 import kotlinx.coroutines.*
+import org.json.JSONObject
 import timber.log.Timber
 import java.nio.charset.Charset
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
 /**
- * Make a GET request and return a parsed object from JSON.
- *
+ * Make a POST request and return a parsed object from JSON.
  * @param context required to register data to database
  * @param url URL of the request to make
  * @param modelClass Relevant class object, for Gson's reflection
- * @param headers Map of request headers
+ * @param requestHeaders Map of request headers
+ * @param requestBody json request body
  * @param listener takes in a callback eventually notifying a successful network call
  * @param errorListener takes in a callback eventually notifying a failed network call
- * @author Saumya Macwan (Created on 5th May '22)
+ * @author Saumya Macwan (Created on 6th May '22)
  */
-class GetRequest<T> constructor(
+class PostRequest<T> constructor(
     private val context: Context,
     url: String,
     private val modelClass: Class<T>,
-    private val headers: MutableMap<String, String>?,
+    private val requestHeaders: MutableMap<String, String>?,
+    private val requestParams: MutableMap<String, String>?,
+    private val requestBody: JSONObject?,
     private val listener: Response.Listener<T>,
     errorListener: Response.ErrorListener
-) : Request<T>(Method.GET, url, errorListener) {
+) : Request<T>(Method.POST, url, errorListener) {
     private lateinit var requestTimeStamp: String
     private var requestTime by Delegates.notNull<Long>()
     private lateinit var responseTimeStamp: String
@@ -47,8 +50,8 @@ class GetRequest<T> constructor(
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getHeaders(): MutableMap<String, String> =
-        headers?.let {
+    override fun getHeaders(): MutableMap<String, String> {
+        return requestHeaders?.let {
             requestTime = System.currentTimeMillis()
             requestTimeStamp = currentTimeStamp
             if (BuildConfig.DEBUG) {
@@ -68,8 +71,15 @@ class GetRequest<T> constructor(
             }
             headers
         }
+    }
 
-    override fun deliverResponse(response: T) = listener.onResponse(response)
+    override fun getParams(): MutableMap<String, String>? {
+        return requestParams ?: super.getParams()
+    }
+
+    override fun getBody(): ByteArray {
+        return requestBody?.toString()?.toByteArray() ?: super.getBody()
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun parseNetworkResponse(response: NetworkResponse?): Response<T> {
@@ -90,42 +100,44 @@ class GetRequest<T> constructor(
 
 
             response?.apply {
+                val responseHeaders = headers
                 scope.launch {
                     with(NetworkRepo.getInstance(context)) {
                         addInfo(
                             url,
-                            "GET",
+                            "POST",
                             statusCode,
                             requestTimeStamp,
                             networkTimeMs,
                             responseTimeStamp,
-                            if (headers != null && headers!!.containsKey("Content-Type")) {
-                                headers!!["Content-Type"]
+                            if (responseHeaders != null && responseHeaders.containsKey("Content-Type")) {
+                                responseHeaders["Content-Type"]
                             } else {
                                 null
                             },
-                            timeOut = if (headers != null
-                                && headers!!.containsKey("Keep-Alive")
-                                && headers!!["Keep-Alive"]!!.contains(
+                            timeOut = if (responseHeaders != null
+                                && responseHeaders.containsKey("Keep-Alive")
+                                && responseHeaders["Keep-Alive"]!!.contains(
                                     "timeout",
                                     ignoreCase = true
                                 )
                             ) {
-                                headers!!["Keep-Alive"]!!.substring(8, 9).toInt()
+                                responseHeaders["Keep-Alive"]!!.substring(8, 9).toInt()
                             } else {
                                 null
                             }
                         )
                         addRequest(
-                            this@GetRequest.headers,
+                            requestHeaders,
                             null,
-                            body?.let { String(it, Charsets.UTF_8) } ?: run { "" },
+                            requestBody?.toString()?.beautifyString
+                                ?: requestParams?.toString()?.beautifyString,
                             requestTime,
                             ""
                         )
                         addResponse(
                             headers,
-                            body = data?.let { String(it, Charsets.UTF_8).beautifyString } ?: run { "" },
+                            body = data?.let { String(it, Charsets.UTF_8).beautifyString },
                             receivedResponseAtMillis = responseTime,
                             contentLength = data.size.toString(),
                             isSuccessful = true
@@ -152,12 +164,12 @@ class GetRequest<T> constructor(
                 with(NetworkRepo.getInstance(context)) {
                     addInfo(
                         url,
-                        "GET",
+                        "POST",
                         null,
                         requestTimeStamp,
                         responseTime,
                         responseTimeStamp,
-                        if (headers?.contains("Content-Type") == true) {
+                        if (headers.contains("Content-Type")) {
                             headers["Content-Type"]
                         } else {
                             null
@@ -167,7 +179,8 @@ class GetRequest<T> constructor(
                     addRequest(
                         headers,
                         null,
-                        String(body, Charsets.UTF_8),
+                        requestBody?.toString()?.beautifyString
+                            ?: requestParams?.toString()?.beautifyString,
                         requestTime,
                         ""
                     )
@@ -185,27 +198,33 @@ class GetRequest<T> constructor(
         }
     }
 
+    override fun deliverResponse(response: T) = listener.onResponse(response)
+
     private constructor(builder: Builder<T>) : this(
         context = builder.context,
         url = builder.url,
+        requestHeaders = builder.headers,
+        requestParams = builder.requestParams,
+        requestBody = builder.requestBody,
         modelClass = builder.modelClass,
-        headers = builder.headers,
         listener = builder.listener,
         errorListener = builder.errorListener
     )
 
     companion object {
-        inline fun <T> Context.makeAGetRequest(block: Builder<T>.() -> Unit): GetRequest<T> =
+        inline fun <T> Context.makeAPostRequest(block: Builder<T>.() -> Unit): PostRequest<T> =
             Builder<T>(this).apply(block).build()
     }
 
     class Builder<T>(val context: Context) {
         lateinit var url: String
-        var headers: MutableMap<String, String>? = null
         lateinit var modelClass: Class<T>
         lateinit var onSuccess: SuccessCallback<T>
         lateinit var onFailure: FailureCallback
         private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+        var headers: MutableMap<String, String>? = null
+        var requestParams: MutableMap<String, String>? = null
+        var requestBody: JSONObject? = null
         internal val listener: Response.Listener<T> = Response.Listener {
             onSuccess(it)
         }
@@ -217,7 +236,7 @@ class GetRequest<T> constructor(
                     with(NetworkRepo.getInstance(context)) {
                         addInfo(
                             url,
-                            "GET",
+                            "POST",
                             null,
                             null,
                             null,
@@ -232,7 +251,8 @@ class GetRequest<T> constructor(
                         addRequest(
                             headers,
                             null,
-                            "Request body is empty",
+                            requestBody?.toString()?.beautifyString
+                                ?: requestParams?.toString()?.beautifyString,
                             System.currentTimeMillis(),
                             ""
                         )
@@ -250,6 +270,6 @@ class GetRequest<T> constructor(
             }
         }
 
-        fun build() = GetRequest(this@Builder)
+        fun build() = PostRequest(this@Builder)
     }
 }

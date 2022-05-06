@@ -27,7 +27,7 @@ object TestUtils {
         }, 100)
     }
 
-    val Any.currentTimeStamp: String
+    val currentTimeStamp: String
         @RequiresApi(Build.VERSION_CODES.O)
         get() = ZonedDateTime.now()
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSS Z"))

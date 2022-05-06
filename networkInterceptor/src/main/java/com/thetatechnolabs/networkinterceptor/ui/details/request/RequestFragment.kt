@@ -1,5 +1,6 @@
 package com.thetatechnolabs.networkinterceptor.ui.details.request
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,8 @@ internal class RequestFragment : Fragment() {
     private var _binding: FragmentRequestBinding? = null
     private val binding: FragmentRequestBinding get() = _binding!!
 
+    private lateinit var requestAdapter: RequestAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,11 +29,14 @@ internal class RequestFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
             val clickedItem =
                 checkNotNull(arguments?.getParcelable<NetworkInfo>(NetworkCallListFragment.TAG))
+            requestAdapter =
+                RequestAdapter(headers = clickedItem.request.getHeaders(clickedItem.request.headers))
             with(binding) {
                 textHeaderRequest.show()
                 textBodyHeaderRequest.show()
@@ -47,9 +53,12 @@ internal class RequestFragment : Fragment() {
                     }
                     textBodyRequest.text =
                         body ?: getString(R.string.empty_request_body_text)
-                    RVHeadersListRequest.adapter =
-                        getHeader(clickedItem.request.headers)
-                            ?.let { RequestAdapter(it) }
+                    RVHeadersListRequest.apply {
+                        adapter = requestAdapter
+                        post {
+                            requestAdapter.notifyDataSetChanged()
+                        }
+                    }
                 }
             }
         } catch (exception: IllegalStateException) {

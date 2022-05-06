@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
 import com.thetatechnolabs.networkinterceptor.databinding.RowParamsBinding
 import com.thetatechnolabs.networkinterceptor.ui.details.adapters.CallDetails
 import java.io.BufferedWriter
@@ -13,6 +15,8 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 internal object GeneralUtils {
+    private val gson = GsonBuilder().setPrettyPrinting().create()
+
     // Takes formatter string and converts string to date time according to formatter string
     @RequiresApi(Build.VERSION_CODES.O)
     fun String.getTime(formatString: String): String =
@@ -39,33 +43,44 @@ internal object GeneralUtils {
 
     // An extension to make view visible
     fun View.show() {
-        this.visibility = View.VISIBLE
+        visibility = View.VISIBLE
     }
 
     // An extension to make view gone
     fun View.hide() {
-        this.visibility = View.GONE
+        visibility = View.GONE
     }
 
     // Extension to help binding headers to pagers
     fun RowParamsBinding.bind(header: String?, value: String?) {
-        this.textHeader.text = header
-        this.textValue.text = value
+        textHeader.text = header
+        textValue.text = value
     }
 
     fun RowParamsBinding.hide() {
-        this.textHeader.hide()
-        this.textValue.hide()
+        textHeader.hide()
+        textValue.hide()
     }
 
     fun RowParamsBinding.show() {
-        this.textHeader.show()
-        this.textValue.show()
+        textHeader.show()
+        textValue.show()
     }
 
     // Write a line in file
     fun BufferedWriter.writeALine(line: String) {
-        this.write(line)
-        this.newLine()
+        write(line)
+        newLine()
     }
+
+    // uses arraylist returned by okhttp headers and converts it to usable map
+    fun ArrayList<*>.getMapFromArrayList(): Map<String, String>? = if (isEmpty()) {
+        null
+    } else {
+        chunked(2) {
+            it[0] as String to it[1] as String
+        }.toMap()
+    }
+
+    val String.beautifyString: String get() = gson.toJson(JsonParser.parseString(this))
 }

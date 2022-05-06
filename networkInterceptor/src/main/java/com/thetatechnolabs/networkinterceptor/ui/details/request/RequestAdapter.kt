@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.thetatechnolabs.networkinterceptor.databinding.RowParamsBinding
 import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.bind
-import okhttp3.Headers
+import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.getMapFromArrayList
 
-internal class RequestAdapter(private val headers: Headers) :
+internal class RequestAdapter(private var headers: Map<String, Any>?) :
     RecyclerView.Adapter<RequestAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -15,22 +15,30 @@ internal class RequestAdapter(private val headers: Headers) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(headers)
+        headers?.let { headerMap ->
+            val key = headerMap.keys.elementAt(position)
+            val value = headerMap.values.elementAt(position)
+            if (key == "namesAndValues") {
+                when (value) {
+                    is ArrayList<*> -> headers = value.getMapFromArrayList()
+                }
+            } else {
+                when (value) {
+                    is String -> holder.bind(key, value)
+                }
+            }
+        }
     }
 
     override fun getItemCount(): Int {
-        return headers.size()
+        return headers?.size ?: 0
     }
 
     class ViewHolder(private val binding: RowParamsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(headers: Headers) {
-            for (index in 0 until headers.size()) {
-                with(binding) {
-                    this.bind(headers.name(index), headers.value(index))
-                }
-            }
+        fun bind(key: String?, value: String?) {
+            binding.bind("[$key]", value)
         }
 
         companion object {

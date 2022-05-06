@@ -3,9 +3,8 @@ package com.thetatechnolabs.networkinterceptor.network
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
 import com.thetatechnolabs.networkinterceptor.data.repositories.NetworkRepo
+import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.beautifyString
 import kotlinx.coroutines.*
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -153,8 +152,7 @@ class NetworkInterceptor constructor(private val context: Context?) : Intercepto
                         )
                         addResponse(
                             responseHeaders,
-                            body = GsonBuilder().setPrettyPrinting().create()
-                                .toJson(JsonParser.parseString(responseTemp)),
+                            body = responseTemp.beautifyString,
                             receivedResponseAtMillis = tookMs,
                             isSuccessful = response.isSuccessful,
                             contentLength = bodySize

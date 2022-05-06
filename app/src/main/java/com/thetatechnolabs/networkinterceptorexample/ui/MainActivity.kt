@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.thetatechnolabs.networkinterceptor.gesture.GestureUtils.registerSensorListener
 import com.thetatechnolabs.networkinterceptor.gesture.GestureUtils.unRegisterSensorListener
-import com.thetatechnolabs.networkinterceptor.network.Queue.Companion.queueSharedInstance
 import com.thetatechnolabs.networkinterceptor.utils.TestUtils.showNetworkLog
 import com.thetatechnolabs.networkinterceptorexample.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.rootLayout.setOnClickListener {
             showNetworkLog()
-            mainViewModel.makeNetworkRequest()
+            mainViewModel.makeVolleyPostRequest("Hello", "Male", "Male@gender.com", "inactive")
         }
     }
 

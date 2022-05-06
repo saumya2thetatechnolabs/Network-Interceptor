@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.thetatechnolabs.networkinterceptor.data.database.entities.Info
 import com.thetatechnolabs.networkinterceptor.data.database.entities.NetworkInfo
 import kotlinx.coroutines.flow.Flow
 

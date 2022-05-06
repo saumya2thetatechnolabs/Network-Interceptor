@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.rootLayout.setOnClickListener {
             showNetworkLog()
-            mainViewModel.makeVolleyPostRequest("Hello", "Male", "Male@gender.com", "inactive")
+            mainViewModel.makeRetrofitRequest()
         }
     }
 

@@ -1,4 +1,4 @@
-# Network Interceptor [![Release](https://jitpack.io/v/saumya2thetatechnolabs/Network-Interceptor.svg)](https://jitpack.io/#saumya2thetatechnolabs/Network-Interceptor)
+# Network Interceptor [![Release](https://jitpack.io/v/saumya2thetatechnolabs/Network-Interceptor.svg?style=flat-square)](https://jitpack.io/#saumya2thetatechnolabs/Network-Interceptor)
 
 Network Interceptor is a library to track your network calls to help you debug your code better.
 Happy Coding :)
@@ -38,8 +38,7 @@ dependencies {
 ## Usage
 
 Usage in MainActivity.
-(This can also be done on Application lifecycle. Just register it once the app is created and
-unregister it when it terminates.)
+> This can also be done on Application lifecycle. Just register it once the app is created and unregister it when it terminates
 
 ```kotlin
 import com.thetatechnolabs.networkinterceptor.gesture.GestureUtils.registerSensorListener
@@ -60,9 +59,13 @@ override fun onDestroy() {
     this.unRegisterSensorListener()
 }
 ```
+---
+### With Retrofit
 
-Must add an OkHttpClient as below in Retrofit Builder.
-(Context is required to get the database instance when the network call is fired.)
+To trace the network call for logging, add `NetworkInterceptor(context)` as below.
+> Make sure that you have configured retrofit and gson
+>
+>Context is required to get access database when the network call is traced
 
 ```kotlin
 client(OkHttpClient.Builder().apply {
@@ -70,14 +73,56 @@ client(OkHttpClient.Builder().apply {
 }.build())
 ```
 
+---
+### With Volley
+
+This library provide volley request queue as singleton out of the box. to use it, just access using
+any context i.e. `context.volleyRequestQueue` and queue request to it
+using `volleyRequestQueue.add()`.
+
+>Make sure volley dependency is configured
+
+To create a GET request use `makeAGetRequest` DSL function as below and add it to request queue.
+
+```kotlin
+context.makeAGetRequest<T> {
+    url = "url-to-target"
+    headers = mutableMapOf("key" to "value")
+    modelClass = { YourClass<T> }::class.java
+    onSuccess = { T ->
+        networkCallResonse with model<T>
+    }
+    onFailure =
+        { localizedMessage, message, networkTimeMs ->
+            get network call failure details here with above parameters
+        }
+}
+```
+
+To create a POST request use `makeAPostRequest` DSL function as below and add it to request queue.
+
+```kotlin
+context.makeAPostRequest<T> {
+    url = "url-to-target"
+    headers = mutableMapOf("key" to "value")
+    requestParams = mutableMapOf("key" to "value")
+    requestBody = JSONObject()
+    modelClass = { YourClass<T> }::class.java
+    onSuccess = { T ->
+        networkCallResonse with model<T>
+    }
+    onFailure = { localizedMessage, message, networkTimeMs ->
+        get network call failure details here with above parameters
+    }
+}
+```
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would
 like to change.
 
-Please make sure to update tests as appropriate.
-
 ## Copyright
 
 Created by Saumya Macwan on 3rd May 2022. Copyright (c) 2022 . All rights reserved. Last modified
-6th May 2022.
+11th May 2022.

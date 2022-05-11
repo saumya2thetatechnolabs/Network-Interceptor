@@ -1,6 +1,8 @@
 package com.thetatechnolabs.networkinterceptorexample.ui
 
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,6 +21,7 @@ class MainViewModel(private val application: Application) : ViewModel() {
     private val _getWeather by lazy { MutableLiveData<String?>(null) }
     val getWeather: LiveData<String?> get() = _getWeather
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun makeVolleyGetRequest() = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             try {

@@ -32,6 +32,7 @@ import kotlin.properties.Delegates
  * @param errorListener takes in a callback eventually notifying a failed network call
  * @author Saumya Macwan (Created on 5th May '22)
  */
+@RequiresApi(Build.VERSION_CODES.O)
 class GetRequest<T> constructor(
     private val context: Context,
     url: String,
@@ -46,8 +47,8 @@ class GetRequest<T> constructor(
     private var responseTime by Delegates.notNull<Long>()
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun getHeaders(): MutableMap<String, String> =
+        // checks if user has provided headers, or else the default headers will be considered
         headers?.let {
             requestTime = System.currentTimeMillis()
             requestTimeStamp = currentTimeStamp
@@ -71,9 +72,9 @@ class GetRequest<T> constructor(
 
     override fun deliverResponse(response: T) = listener.onResponse(response)
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun parseNetworkResponse(response: NetworkResponse?): Response<T> {
         return try {
+            // Calculating time taken by request to get completed
             responseTime = TimeUnit.MILLISECONDS.toMillis(System.currentTimeMillis() - requestTime)
             responseTimeStamp = currentTimeStamp
             if (BuildConfig.DEBUG) {
@@ -125,7 +126,8 @@ class GetRequest<T> constructor(
                         )
                         addResponse(
                             headers,
-                            body = data?.let { String(it, Charsets.UTF_8).beautifyString } ?: run { "" },
+                            body = data?.let { String(it, Charsets.UTF_8).beautifyString }
+                                ?: run { "" },
                             receivedResponseAtMillis = responseTime,
                             contentLength = data.size.toString(),
                             isSuccessful = true
@@ -199,6 +201,9 @@ class GetRequest<T> constructor(
             Builder<T>(this).apply(block).build()
     }
 
+    /**
+     * [Builder] takes the same arguments as [GetRequest] to generate DSL function [makeAGetRequest]
+     */
     class Builder<T>(val context: Context) {
         lateinit var url: String
         var headers: MutableMap<String, String>? = null
@@ -210,7 +215,6 @@ class GetRequest<T> constructor(
             onSuccess(it)
         }
 
-        @RequiresApi(Build.VERSION_CODES.O)
         internal val errorListener: Response.ErrorListener = Response.ErrorListener {
             with(it) {
                 scope.launch {

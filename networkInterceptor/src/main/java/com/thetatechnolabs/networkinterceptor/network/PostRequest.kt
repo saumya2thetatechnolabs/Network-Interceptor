@@ -24,6 +24,7 @@ import kotlin.properties.Delegates
 
 /**
  * Make a POST request and return a parsed object from JSON.
+ *
  * @param context required to register data to database
  * @param url URL of the request to make
  * @param modelClass Relevant class object, for Gson's reflection
@@ -33,6 +34,7 @@ import kotlin.properties.Delegates
  * @param errorListener takes in a callback eventually notifying a failed network call
  * @author Saumya Macwan (Created on 6th May '22)
  */
+@RequiresApi(Build.VERSION_CODES.O)
 class PostRequest<T> constructor(
     private val context: Context,
     url: String,
@@ -49,8 +51,8 @@ class PostRequest<T> constructor(
     private var responseTime by Delegates.notNull<Long>()
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun getHeaders(): MutableMap<String, String> {
+        // checks if user has provided headers, or else the default headers will be considered
         return requestHeaders?.let {
             requestTime = System.currentTimeMillis()
             requestTimeStamp = currentTimeStamp
@@ -74,16 +76,18 @@ class PostRequest<T> constructor(
     }
 
     override fun getParams(): MutableMap<String, String>? {
+        // checks if user has provided parameters, or else the default parameters will be considered
         return requestParams ?: super.getParams()
     }
 
     override fun getBody(): ByteArray {
+        // checks if user has provided request body, or else the default request body will be considered
         return requestBody?.toString()?.toByteArray() ?: super.getBody()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun parseNetworkResponse(response: NetworkResponse?): Response<T> {
         return try {
+            // Calculating time taken by request to get completed
             responseTime = TimeUnit.MILLISECONDS.toMillis(System.currentTimeMillis() - requestTime)
             responseTimeStamp = currentTimeStamp
             if (BuildConfig.DEBUG) {
@@ -216,6 +220,9 @@ class PostRequest<T> constructor(
             Builder<T>(this).apply(block).build()
     }
 
+    /**
+     * [Builder] takes the same arguments as [PostRequest] to generate DSL function [makeAPostRequest]
+     */
     class Builder<T>(val context: Context) {
         lateinit var url: String
         lateinit var modelClass: Class<T>
@@ -229,7 +236,6 @@ class PostRequest<T> constructor(
             onSuccess(it)
         }
 
-        @RequiresApi(Build.VERSION_CODES.O)
         internal val errorListener: Response.ErrorListener = Response.ErrorListener {
             with(it) {
                 scope.launch {

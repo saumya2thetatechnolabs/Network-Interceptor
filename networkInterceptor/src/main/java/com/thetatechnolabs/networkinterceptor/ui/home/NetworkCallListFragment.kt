@@ -25,6 +25,7 @@ import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.hide
 import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.show
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 internal class NetworkCallListFragment : BottomSheetDialogFragment() {
 
@@ -44,6 +45,7 @@ internal class NetworkCallListFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNetworkCallListBinding.inflate(inflater, container, false)
+        Timber.plant(Timber.DebugTree())
         return binding.root
     }
 
@@ -95,6 +97,7 @@ internal class NetworkCallListFragment : BottomSheetDialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        Timber.uproot(Timber.DebugTree())
     }
 
     companion object {

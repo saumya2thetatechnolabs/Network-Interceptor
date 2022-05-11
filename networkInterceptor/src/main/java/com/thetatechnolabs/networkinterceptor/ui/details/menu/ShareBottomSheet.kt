@@ -16,6 +16,7 @@ import com.thetatechnolabs.networkinterceptor.R
 import com.thetatechnolabs.networkinterceptor.data.database.entities.NetworkInfo
 import com.thetatechnolabs.networkinterceptor.databinding.BottomSheetShareBinding
 import com.thetatechnolabs.networkinterceptor.utils.GeneralUtils.writeALine
+import timber.log.Timber
 import java.io.File
 
 
@@ -86,98 +87,106 @@ internal class ShareBottomSheet : BottomSheetDialogFragment() {
     private fun prepareFileToShare() {
         logFile?.let { file ->
             file.bufferedWriter().use { writer ->
-                with(writer) {
+                try {
+                    with(writer) {
 
-                    // INFO DETAILS
-                    newLine()
-                    writeALine("** INFO **")
-                    newLine()
-                    clickedItem?.info?.apply {
-                        url.let {
-                            writeALine(getString(R.string.url_header))
-                            writeALine(it)
-                            newLine()
-                        }
-                        method.let {
-                            writeALine(getString(R.string.method_header))
-                            writeALine(it)
-                            newLine()
-                        }
-                        status?.let {
-                            writeALine(getString(R.string.status_header))
-                            writeALine(it.toString())
-                            newLine()
-                        }
-                        requestTimeStamp?.let {
-                            writeALine(getString(R.string.request_time_header))
-                            writeALine(it)
-                            newLine()
-                        }
-                        responseTimeStamp?.let {
-                            writeALine(getString(R.string.response_time_header))
-                            writeALine(it)
-                            newLine()
-                        }
-                        timeOut?.let {
-                            writeALine(getString(R.string.time_out_header))
-                            writeALine(it.toString())
-                            newLine()
-                        }
-                        contentType?.let {
-                            writeALine(getString(R.string.content_type_header))
-                            writeALine(it)
-                            newLine()
-                        }
-                    }
-
-                    // REQUEST DETAILS
-                    newLine()
-                    writeALine("** REQUEST **")
-                    newLine()
-                    clickedItem?.request?.apply {
-                        getHeaders(headers)?.let { headerMap ->
-                            writeALine("-- Headers --")
-                            for (header in headerMap.entries) {
-                                writeALine("[${header.key}]")
-                                writeALine(header.value)
-                                newLine()
-                            }
-                        }
-                        contentLength?.let {
-                            if (it.isNotEmpty()) {
-                                writeALine("Content-Length")
+                        // INFO DETAILS
+                        newLine()
+                        writeALine("** INFO **")
+                        newLine()
+                        clickedItem?.info?.apply {
+                            url.let {
+                                writeALine(getString(R.string.url_header))
                                 writeALine(it)
+                                newLine()
                             }
-                        }
-                        newLine()
-                        writeALine("-- Body --")
-                        writeALine(
-                            body
-                                ?: getString(R.string.empty_request_body_text)
-                        )
-                    }
-
-                    // RESPONSE DETAILS
-                    newLine()
-                    newLine()
-                    writeALine("** RESPONSE **")
-                    newLine()
-                    clickedItem?.response?.apply {
-                        getHeaders(headers)?.let {
-                            writeALine("-- Headers --")
-                            for (header in it.entries) {
-                                writeALine("[${header.key}]")
-                                writeALine(header.value)
+                            method.let {
+                                writeALine(getString(R.string.method_header))
+                                writeALine(it)
+                                newLine()
+                            }
+                            status?.let {
+                                writeALine(getString(R.string.status_header))
+                                writeALine(it.toString())
+                                newLine()
+                            }
+                            requestTimeStamp?.let {
+                                writeALine(getString(R.string.request_time_header))
+                                writeALine(it)
+                                newLine()
+                            }
+                            responseTimeStamp?.let {
+                                writeALine(getString(R.string.response_time_header))
+                                writeALine(it)
+                                newLine()
+                            }
+                            timeOut?.let {
+                                writeALine(getString(R.string.time_out_header))
+                                writeALine(it.toString())
+                                newLine()
+                            }
+                            contentType?.let {
+                                writeALine(getString(R.string.content_type_header))
+                                writeALine(it)
                                 newLine()
                             }
                         }
+
+                        // REQUEST DETAILS
                         newLine()
-                        writeALine("-- Body --")
-                        writeALine(
-                            body
-                                ?: getString(R.string.empty_response_body_text)
-                        )
+                        writeALine("** REQUEST **")
+                        newLine()
+                        clickedItem?.request?.apply {
+                            getHeaders(headers)?.let { headerMap ->
+                                writeALine("-- Headers --")
+                                for (header in headerMap.entries) {
+                                    writeALine("[${header.key}]")
+                                    writeALine(header.value)
+                                    newLine()
+                                }
+                            }
+                            contentLength?.let {
+                                if (it.isNotEmpty()) {
+                                    writeALine("Content-Length")
+                                    writeALine(it)
+                                }
+                            }
+                            newLine()
+                            writeALine("-- Body --")
+                            writeALine(
+                                body
+                                    ?: getString(R.string.empty_request_body_text)
+                            )
+                        }
+
+                        // RESPONSE DETAILS
+                        newLine()
+                        newLine()
+                        writeALine("** RESPONSE **")
+                        newLine()
+                        clickedItem?.response?.apply {
+                            getHeaders(headers)?.let {
+                                writeALine("-- Headers --")
+                                for (header in it.entries) {
+                                    writeALine("[${header.key}]")
+                                    writeALine(header.value)
+                                    newLine()
+                                }
+                            }
+                            newLine()
+                            writeALine("-- Body --")
+                            writeALine(
+                                body
+                                    ?: getString(R.string.empty_response_body_text)
+                            )
+                        }
+                        flush()
+                        close()
                     }
+                } catch (cause: Throwable) {
+                    Timber.e(cause)
+                } catch (exception: Exception) {
+                    Timber.e(exception.message)
                 }
             }
         }

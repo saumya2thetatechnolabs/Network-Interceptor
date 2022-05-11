@@ -1,7 +1,7 @@
 # Network Interceptor [![Release](https://jitpack.io/v/saumya2thetatechnolabs/Network-Interceptor.svg?style=flat-square)](https://jitpack.io/#saumya2thetatechnolabs/Network-Interceptor)
 
-Network Interceptor is a library to track your network calls to help you debug your code better.
-Happy Coding :)
+Network Interceptor is a library to track your network calls to help you debug your code better. Just shake your device and there it is! 💣 🔥
+Happy Coding :) 👨🏽‍💻
 
 <p align="center">
   <img src="https://i.ibb.co/C51Bn48/Screenshot-20220504-164723-Network-Interceptor.jpg" width="350" title="Screenshot 1">
@@ -35,10 +35,10 @@ dependencies {
 }
 ```
 
-## Usage
+## Implementation
 
-Usage in MainActivity.
-> This can also be done on Application lifecycle. Just register it once the app is created and unregister it when it terminates
+Register sensor listener in you Root activity which stays alive for almost the entire lifecycle of app.
+> A better way to handle all the network traces is to register sensor listener on Application lifecycle.
 
 ```kotlin
 import com.thetatechnolabs.networkinterceptor.gesture.GestureUtils.registerSensorListener
@@ -55,7 +55,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 override fun onDestroy() {
     super.onDestroy()
 
-    // unregister it on onDestroy
+    // unregister sensor listener
     this.unRegisterSensorListener()
 }
 ```

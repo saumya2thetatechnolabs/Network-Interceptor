@@ -97,7 +97,7 @@ internal class NetworkCallListFragment : BottomSheetDialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        Timber.uproot(Timber.DebugTree())
+        Timber.uprootAll()
     }
 
     companion object {

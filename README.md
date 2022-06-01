@@ -92,7 +92,7 @@ To leverage it add this call adaptor factory to retrofit call adapter factory as
 Retrofit.Builder()
     .addCallAdapterFactory(NetworkResponseCallAdapterFactory.create())
 
-suspend fun fetchData(): BaseResponse<Data> // Data is your model
+suspend fun fetchData(): BaseResponse<Data> // Respective model class
 ```
 
 It's a good idea to have a data source to fetch data to repository :

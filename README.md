@@ -8,7 +8,7 @@ Happy Coding :) 👨🏽‍💻
 
 
 <p align="center">
-  <img src="" title="Screenshot 1">
+  <img src="https://github.com/saumya2thetatechnolabs/Network-Interceptor/blob/phase-two/screenshots/NetworkInterceptorImage.jpg" title="Screenshot 1">
 </p>
 
 ## Installation

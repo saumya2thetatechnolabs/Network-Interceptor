@@ -1,11 +1,12 @@
-# Network Interceptor [![Release](https://jitpack.io/v/saumya2thetatechnolabs/Network-Interceptor.svg?style=flat-square)](https://jitpack.io/#saumya2thetatechnolabs/Network-Interceptor)
+<h1 align="center">Network Interceptor
+  <a href="[https://devlibrary.withgoogle.com/products/android/repos/skydoves-pokedex](https://jitpack.io/#saumya2thetatechnolabs/Network-Interceptor)"><img alt="Google" src="https://jitpack.io/v/saumya2thetatechnolabs/Network-Interceptor.svg"/>
+  </a>
+  <br>
+</h1>
 
 Network Interceptor is a library to track your network calls to help you debug your code better.
 Just shake your device and there it is! 💣 🔥, This library also helps with a structured network
 calls (in Retrofit). Please find more details in Implementation section down below. 👇🏽
-
-Happy Coding :) 👨🏽‍💻
-
 
 <p align="center">
   <img src="https://github.com/saumya2thetatechnolabs/Network-Interceptor/blob/phase-two/screenshots/NetworkInterceptorImage.jpg" title="Screenshot 1">

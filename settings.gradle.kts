@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "NetworkInterceptor"
-include(":app", ":networkInterceptor", ":foundation")
+include(":app", ":networkInterceptor")

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -40,7 +41,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     implementation(project(":networkInterceptor"))
-    implementation(project(mapOf("path" to ":foundation")))
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -57,4 +57,10 @@ dependencies {
 
     //Volley
     implementation("com.android.volley:volley:1.2.1")
+
+    // Kotlin - Reflect
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
+
+    // Data Binding
+    kapt("com.android.databinding:compiler:3.1.4")
 }

@@ -1,5 +1,5 @@
 <h1 align="center">Network Interceptor
-  <a href="[https://devlibrary.withgoogle.com/products/android/repos/skydoves-pokedex](https://jitpack.io/#saumya2thetatechnolabs/Network-Interceptor)"><img alt="Google" src="https://jitpack.io/v/saumya2thetatechnolabs/Network-Interceptor.svg"/>
+  <a href="https://jitpack.io/#saumya2thetatechnolabs/Network-Interceptor"><img alt="Google" src="https://jitpack.io/v/saumya2thetatechnolabs/Network-Interceptor.svg"/>
   </a>
   <br>
 </h1>

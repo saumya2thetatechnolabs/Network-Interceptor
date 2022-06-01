@@ -1,4 +1,4 @@
-package com.thetatechnolabs.networkinterceptor.network
+package com.thetatechnolabs.networkinterceptor.network.volley
 
 import android.content.Context
 import com.android.volley.Request

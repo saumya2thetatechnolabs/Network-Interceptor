@@ -9,6 +9,7 @@ import com.thetatechnolabs.networkinterceptor.gesture.GestureUtils.unRegisterSen
 import com.thetatechnolabs.networkinterceptor.utils.TestUtils.showNetworkLog
 import com.thetatechnolabs.networkinterceptorexample.R
 import com.thetatechnolabs.networkinterceptorexample.databinding.ActivityMainBinding
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -22,7 +23,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         this.registerSensorListener()
 
         lifecycleScope.launch {
-            mainViewModel.getWeather.observe(this@MainActivity) {
+            mainViewModel.getWeather.collectLatest {
                 binding {
                     textResponse.text = it
                 }

@@ -1,18 +1,27 @@
-package com.thetatechnolabs.networkinterceptorexample
+package com.thetatechnolabs.networkinterceptorexample.data.remote
 
 import android.content.Context
 import com.google.gson.GsonBuilder
-import com.thetatechnolabs.networkinterceptorexample.models.Weather
 import com.thetatechnolabs.networkinterceptor.network.NetworkInterceptor
+import com.thetatechnolabs.networkinterceptor.network.retrofitHelpers.BaseResponse
+import com.thetatechnolabs.networkinterceptor.network.retrofitHelpers.NetworkResponseCallAdapterFactory
+import com.thetatechnolabs.networkinterceptorexample.data.models.Weather
 import okhttp3.OkHttpClient
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface ApiService {
     @GET("astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&shift=0")
-    suspend fun getWeather(): Response<Weather>
+    suspend fun getWeather(): BaseResponse<Weather>
+}
+
+class WeatherRemoteDataSource(
+    private val apiService: ApiService
+) {
+    suspend operator fun invoke(): BaseResponse<Weather> {
+        return apiService.getWeather()
+    }
 }
 
 class ApiClient(context: Context) {
@@ -30,6 +39,7 @@ class ApiClient(context: Context) {
                     .create()
             )
         )
+        .addCallAdapterFactory(NetworkResponseCallAdapterFactory.create())
         .build()
         .create(ApiService::class.java)
 

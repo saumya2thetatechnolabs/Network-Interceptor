@@ -1,4 +1,4 @@
-package com.thetatechnolabs.networkinterceptorexample.models
+package com.thetatechnolabs.networkinterceptorexample.data.models
 
 
 data class Datasery(

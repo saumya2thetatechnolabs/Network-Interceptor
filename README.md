@@ -1,11 +1,14 @@
 # Network Interceptor [![Release](https://jitpack.io/v/saumya2thetatechnolabs/Network-Interceptor.svg?style=flat-square)](https://jitpack.io/#saumya2thetatechnolabs/Network-Interceptor)
 
-Network Interceptor is a library to track your network calls to help you debug your code better. Just shake your device and there it is! 💣 🔥
+Network Interceptor is a library to track your network calls to help you debug your code better.
+Just shake your device and there it is! 💣 🔥, This library also helps with a structured network
+calls (in Retrofit). Please find more details in Implementation section down below. 👇🏽
+
 Happy Coding :) 👨🏽‍💻
 
+
 <p align="center">
-  <img src="https://i.ibb.co/C51Bn48/Screenshot-20220504-164723-Network-Interceptor.jpg" width="350" title="Screenshot 1">
-  <img src="https://i.ibb.co/FqGnsVz/Screenshot-20220504-164731-Network-Interceptor.jpg" width="350" alt="accessibility text">
+  <img src="" title="Screenshot 1">
 </p>
 
 ## Installation
@@ -37,7 +40,8 @@ dependencies {
 
 ## Implementation
 
-Register sensor listener in you Root activity which stays alive for almost the entire lifecycle of app.
+Register sensor listener in you Root activity which stays alive for almost the entire lifecycle of
+app.
 > A better way to handle all the network traces is to register sensor listener on Application lifecycle.
 
 ```kotlin
@@ -59,7 +63,9 @@ override fun onDestroy() {
     this.unRegisterSensorListener()
 }
 ```
+
 ---
+
 ### With Retrofit
 
 To trace the network call for logging, add `NetworkInterceptor(context)` as below.
@@ -73,14 +79,100 @@ client(OkHttpClient.Builder().apply {
 }.build())
 ```
 
+#### Structuring network calls for better response handling (MVVM Architecture)
+
+`NetworkResponseCallAdapterFactory` is a call adapter which wraps your usual retrofit
+response `Response<T>` into `BaseResponse<T>` which is a sealed interface three implementation data
+classes for response handling delegation.
+
+To leverage it add this call adaptor factory to retrofit call adapter factory as below:
+
+```kotlin
+Retrofit.Builder()
+    .addCallAdapterFactory(NetworkResponseCallAdapterFactory.create())
+
+suspend fun fetchData(): BaseResponse<Data> // Data is your model
+```
+
+It's a good idea to have a data source to fetch data to repository :
+
+```kotlin
+class RemoteDataSource {
+    suspend operator fun invoke(): BaseResponse<Data> {
+        return ApiClientCompanion.networkService.fetchData()
+    }
+}
+```
+
+Repository:
+
+```kotlin
+class Repository(
+    private val remoteDataSource: RemoteDataSource
+) {
+    suspend fun fetchData(
+        onStart: () -> Unit,
+        onComplete: () -> Unit,
+        onError: (String?) -> Unit
+    ): Flow<Data> = flow {
+        val response = remoteDataSource.invoke()
+
+        response.onSuccess {
+            emit(it)
+        }.onError {
+            onError(it)
+        }.onException {
+            onError(it.message)
+        }
+    }.cancellable() // To utilise onCompletion code block
+        .onStart { onStart() }
+        .onCompletion { onComplete() }
+        .flowOn(Dispatchers.IO)
+}
+```
+
+ViewModel:
+
+```kotlin
+class ViewModel(
+    private val repo: Repository
+) {
+    fun fetchData(): StateFlow<Data> = repo.fetchData(
+        onStart = {/* Loader Starts */ },
+        onComplete = {/* Loader Ends */ },
+        onError = {/* Handle error */ }
+    ).stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(),
+        initialValue
+    )
+}
+```
+
+This `StateFlow` can be collected in activity to subscribe to ui, This flow is cancellable thus its
+a good idea to unsubscribe to flow collector once our UI has been modified with data till the next
+network call
+
+```kotlin
+val dataNetworkCall = lifecycleScope.launch {
+    viewModel.fetchData().collectLatest { data ->
+
+    }
+}
+
+// cancel this job once its done its job xD.
+dataNetworkCall.cancel()
+```
+
 ---
+
 ### With Volley
 
 This library provide volley request queue as singleton out of the box. to use it, just access using
 any context i.e. `context.volleyRequestQueue` and queue request to it
 using `volleyRequestQueue.add()`.
 
->Make sure volley dependency is configured
+> Make sure volley dependency is configured
 
 To create a GET request use `makeAGetRequest` DSL function as below and add it to request queue.
 

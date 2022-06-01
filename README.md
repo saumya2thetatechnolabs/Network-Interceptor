@@ -214,8 +214,3 @@ context.makeAPostRequest<T> {
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would
 like to change.
-
-## Copyright
-
-Created by Saumya Macwan on 3rd May 2022. Copyright (c) 2022 . All rights reserved. Last modified
-1st June 2022.

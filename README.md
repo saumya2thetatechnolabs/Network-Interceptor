@@ -53,15 +53,19 @@ override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    // Register sensor listener in your onCreate
-    this.registerSensorListener()
+    // Register sensor listener in your onCreate in debug builds
+    if(BuildConfig.DEBUG) {
+      this.registerSensorListener()
+    }
 }
 
 override fun onDestroy() {
     super.onDestroy()
 
-    // unregister sensor listener
-    this.unRegisterSensorListener()
+    // unregister sensor listener in debug builds
+    if(BuildConfig.DEBUG) {
+      this.unRegisterSensorListener()
+    }
 }
 ```
 

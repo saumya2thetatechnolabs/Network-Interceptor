@@ -20,7 +20,7 @@ suspend inline fun <T> BaseResponse<T>.onSuccess(
  */
 @ResponseDelegate
 suspend inline fun <T> BaseResponse<T>.onError(
-    crossinline block: suspend (String?) -> Unit
+    block: suspend (String?) -> Unit
 ): BaseResponse<T> =
     apply {
         if (this is Error<T>) {
@@ -33,7 +33,7 @@ suspend inline fun <T> BaseResponse<T>.onError(
  */
 @ResponseDelegate
 suspend inline fun <T> BaseResponse<T>.onException(
-    crossinline block: suspend (Throwable) -> Unit
+    block: suspend (Throwable) -> Unit
 ): BaseResponse<T> =
     apply {
         if (this is Exception<T>) {
@@ -49,7 +49,7 @@ suspend inline fun <T> BaseResponse<T>.onException(
 @ResponseDelegate
 @Suppress("UNCHECKED_CAST")
 inline fun <T, R> BaseResponse<T>.map(
-    crossinline transformer: (T) -> R
+    transformer: (T) -> R
 ): BaseResponse<R> {
     return if (this is Success) {
         Success(transformer(data))

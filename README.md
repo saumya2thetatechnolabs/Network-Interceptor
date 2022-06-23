@@ -12,6 +12,12 @@ calls (in Retrofit). Please find more details in Implementation section down bel
   <img src="https://github.com/saumya2thetatechnolabs/Network-Interceptor/blob/phase-two/screenshots/NetworkInterceptorImage.jpg" title="Screenshot 1">
 </p>
 
+## MAD Score
+
+![MAD Score Summary](https://github.com/saumya2thetatechnolabs/Network-Interceptor/blob/master/networkInterceptor/summary.png)
+
+![Kotlin Score Summary](https://github.com/saumya2thetatechnolabs/Network-Interceptor/blob/master/networkInterceptor/kotlin.png)
+
 ## Installation
 
 ### Import library manually

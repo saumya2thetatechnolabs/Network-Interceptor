@@ -8,6 +8,12 @@ Happy Coding :)
   <img src="https://i.ibb.co/FqGnsVz/Screenshot-20220504-164731-Network-Interceptor.jpg" width="350" alt="accessibility text">
 </p>
 
+## MAD Score
+
+![MAD Score Summary](https://github.com/saumya2thetatechnolabs/Network-Interceptor/blob/master/networkInterceptor/summary.png)
+
+![Kotlin Score Summary](https://github.com/saumya2thetatechnolabs/Network-Interceptor/blob/master/networkInterceptor/kotlin.png)
+
 ## Installation
 
 ### Import library manually
